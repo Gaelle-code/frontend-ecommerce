@@ -1,9 +1,32 @@
 import { Link, NavLink, Outlet } from 'react-router-dom'
 import { ShoppingBag, LogOut, UserCircle, Package } from 'lucide-react'
 import { useAuth } from '../features/auth/AuthProvider'
+import { useEffect, useState } from 'react'
+import { getCart } from '../features/cart/cartApi'
 
 const Layout = () => {
   const { user, logout, isAuthenticated } = useAuth()
+  const [cartCount, setCartCount] = useState(0)
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      setCartCount(0)
+      return
+    }
+
+    const fetchCartCount = async () => {
+      try {
+        const response = await getCart()
+        const items = response.data?.items ?? []
+        const count = items.reduce((sum, item) => sum + item.quantity, 0)
+        setCartCount(count)
+      } catch {
+        setCartCount(0)
+      }
+    }
+
+    fetchCartCount()
+  }, [isAuthenticated])
 
   return (
     <div className="app-shell">
@@ -14,7 +37,7 @@ const Layout = () => {
         </Link>
         <nav className="nav-links" aria-label="Primary">
           <NavLink to="/">Products</NavLink>
-          <NavLink to="/cart">Cart</NavLink>
+          <NavLink to="/cart">Cart{cartCount > 0 ? ` (${cartCount})` : ''}</NavLink>
           {isAuthenticated ? <NavLink to="/orders">Orders</NavLink> : null}
         </nav>
         <div className="topbar-actions">

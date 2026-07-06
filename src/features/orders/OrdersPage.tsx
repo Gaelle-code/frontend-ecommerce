@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { getOrders } from './ordersApi'
 import type { Order } from './ordersApi'
 
 const OrdersPage = () => {
+  const location = useLocation()
   const [orders, setOrders] = useState<Order[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
@@ -40,6 +41,7 @@ const OrdersPage = () => {
           Browse products
         </Link>
       </div>
+      {location.state?.orderPlaced ? <div className="form-success">Order placed successfully.</div> : null}
       {orders.length === 0 ? (
         <div className="page-state">No orders yet. Place one from your cart to see it here.</div>
       ) : (

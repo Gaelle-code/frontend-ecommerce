@@ -6,6 +6,25 @@ export interface ProductCategory {
   description?: string | null
 }
 
+// Files attached to products are represented with a URL and optional metadata.
+export interface FileReference {
+  url: string
+  format?: string
+  size?: number
+}
+
+// Variants are selectable options for products, and the cart API requires a variant id
+// when adding an item to the cart. The storefront uses these values to render and
+// select the correct product variant.
+export interface Variant {
+  id: string
+  color?: string
+  size?: string
+  sku?: string
+  price?: number
+  stock?: number
+}
+
 export interface Product {
   id: string
   name: string
@@ -14,7 +33,8 @@ export interface Product {
   brand?: string
   price: number
   stock: number
-  images?: string[]
+  images?: FileReference[]
+  variants?: Variant[]
   category?: ProductCategory
   createdAt?: string
   updatedAt?: string
@@ -34,8 +54,8 @@ export const getProducts = async () => {
 }
 
 export const getProductById = async (id: string) => {
-  const { data } = await apiClient.get<{ success: boolean; data: Product }>('/api/public/products/' + id)
-  return data.data
+  const { data } = await apiClient.get<{ success: boolean; data: { product: Product } }>('/api/public/products/' + id)
+  return data.data.product || data.data
 }
 
 export const getCategories = async () => {

@@ -10,6 +10,7 @@ const ProductDetailPage = () => {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
   const [message, setMessage] = useState('')
+  const [selectedVariantId, setSelectedVariantId] = useState<string>('')
 
   useEffect(() => {
     if (!id) {
@@ -21,6 +22,10 @@ const ProductDetailPage = () => {
         setLoading(true)
         const response = await getProductById(id)
         setProduct(response)
+        if (response.variants?.length) {
+          // Preselect the first available variant so the user can add the item quickly.
+          setSelectedVariantId(response.variants[0].id)
+        }
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Unable to load this product.')
       } finally {
@@ -35,8 +40,15 @@ const ProductDetailPage = () => {
     if (!product) {
       return
     }
+    if (!selectedVariantId) {
+      setMessage('Please select a product variant before adding to cart.')
+      return
+    }
+
+    // The API requires a variant identifier when adding a product to cart.
+    // This is why the selected variant is saved and sent along with the product id.
     try {
-      const response = await addToCart(product.id, 1)
+      const response = await addToCart(product.id, selectedVariantId, 1)
       setMessage(response.message || 'Added to cart.')
     } catch (err) {
       setMessage(err instanceof Error ? err.message : 'Unable to add to cart.')
@@ -62,7 +74,11 @@ const ProductDetailPage = () => {
       </Link>
       <div className="detail-layout card">
         <div className="product-image large" aria-hidden="true">
-          {product.images?.[0] ? <img src={product.images[0]} alt={product.name} /> : <span>Product image</span>}
+          {product.images?.[0]?.url ? (
+            <img src={product.images[0].url} alt={product.name} />
+          ) : (
+            <img src="/product-placeholder.svg" alt="Product image placeholder" />
+          )}
         </div>
         <div className="stack">
           <p className="eyebrow">{product.category?.name || 'Uncategorized'}</p>
@@ -72,6 +88,19 @@ const ProductDetailPage = () => {
             <span>Brand: {product.brand || '—'}</span>
             <span>Stock: {product.stock}</span>
           </div>
+          {product.variants?.length ? (
+            <label>
+              Variant
+              {/* The selected variant id is required for the cart payload. */}
+              <select value={selectedVariantId} onChange={(event) => setSelectedVariantId(event.target.value)}>
+                {product.variants.map((variant) => (
+                  <option key={variant.id} value={variant.id}>
+                    {variant.color || 'Variant'}{variant.size ? ` • ${variant.size}` : ''}{variant.sku ? ` (${variant.sku})` : ''}
+                  </option>
+                ))}
+              </select>
+            </label>
+          ) : null}
           <strong className="price">${product.price.toFixed(2)}</strong>
           <button type="button" onClick={handleAddToCart}>
             Add to cart

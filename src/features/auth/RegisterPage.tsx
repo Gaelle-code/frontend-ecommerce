@@ -27,8 +27,8 @@ const RegisterPage = () => {
 
   return (
     <section className="card auth-card">
-      <h1>Create account</h1>
-      <p>Join Ecomus to save your cart and track orders.</p>
+      <h1>Create your account</h1>
+      <p>Join ShopWithGaelle to save favorites, track orders, and enjoy a faster checkout experience.</p>
       <form className="stack" onSubmit={handleSubmit}>
         <label>
           Name

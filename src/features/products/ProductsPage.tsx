@@ -56,9 +56,9 @@ const ProductsPage = () => {
     <section className="stack">
       <div className="hero-card card">
         <div>
-          <p className="eyebrow">New season</p>
-          <h1>Browse the latest essentials from Ecomus.</h1>
-          <p>Search products, filter by category, and explore live details from the API.</p>
+          <p className="eyebrow">Fresh arrivals</p>
+          <h1>Discover everyday favorites at ShopWithGaelle.</h1>
+          <p>Browse thoughtfully selected products, compare options, and shop with confidence from a trusted retail experience.</p>
         </div>
       </div>
 
@@ -96,7 +96,11 @@ const ProductsPage = () => {
           {filteredProducts.map((product) => (
             <article key={product.id} className="card product-card">
               <div className="product-image" aria-hidden="true">
-                {product.images?.[0] ? <img src={product.images[0]} alt={product.name} /> : <span>Product image</span>}
+                {product.images?.[0]?.url ? (
+                  <img src={product.images[0].url} alt={product.name} />
+                ) : (
+                  <img src="/product-placeholder.svg" alt="Product image placeholder" />
+                )}
               </div>
               <div className="product-content">
                 <p className="eyebrow">{product.category?.name || 'Uncategorized'}</p>

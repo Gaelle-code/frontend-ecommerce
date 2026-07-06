@@ -16,6 +16,7 @@ button { cursor: pointer; }
 .app-shell { min-height: 100vh; display: flex; flex-direction: column; }
 .topbar { display:flex; justify-content:space-between; align-items:center; gap:1rem; padding:1rem 1.5rem; background:#fff; border-bottom:1px solid #e5e7eb; position:sticky; top:0; z-index:10; }
 .brand { display:flex; align-items:center; gap:.6rem; font-weight:700; font-size:1.1rem; }
+.brand-logo { width:36px; height:36px; border-radius:9999px; object-fit:cover; }
 .nav-links, .topbar-actions { display:flex; gap:1rem; align-items:center; }
 .nav-links a, .text-link { color:#4b5563; }
 .nav-links a.active { color:#2563eb; font-weight:600; }

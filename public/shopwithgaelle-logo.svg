@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" role="img" aria-label="ShopWithGaelle logo placeholder">
+  <rect width="240" height="240" rx="44" fill="#0f172a"/>
+  <path d="M70 74h100c24 0 43 19 43 43v6c0 24-19 43-43 43H96v10c0 8-6 14-14 14s-14-6-14-14V74Z" fill="#f59e0b"/>
+  <path d="M96 106h52c11 0 20 9 20 20s-9 20-20 20H96V106Z" fill="#ffffff"/>
+  <path d="M74 56c17 0 31 14 31 31v9H74c-17 0-31-14-31-31S57 56 74 56Z" fill="#38bdf8"/>
+  <circle cx="172" cy="152" r="22" fill="#f8fafc"/>
+</svg>

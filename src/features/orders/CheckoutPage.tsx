@@ -5,7 +5,7 @@ import { placeOrder } from './ordersApi'
 
 const CheckoutPage = () => {
   const navigate = useNavigate()
-  const [items, setItems] = useState<Array<{ id: string; productName?: string; productId: string; quantity: number; price: number }>>([])
+  const [items, setItems] = useState<Array<{ id: string; productName?: string; productId: string; variant?: { id?: string; label?: string }; quantity: number; price: number }>>([])
   const [loading, setLoading] = useState(true)
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState('')
@@ -68,6 +68,10 @@ const CheckoutPage = () => {
                 <h2>{item.productName || item.productId}</h2>
                 <span>{item.quantity} × ${item.price.toFixed(2)}</span>
               </div>
+              {/* Render variant metadata when the API provides it, falling back to the variant id if necessary. */}
+              {(item.variant?.label || item.variant?.id) ? (
+                <p className="muted">Variant: {item.variant?.label ?? item.variant?.id}</p>
+              ) : null}
             </article>
           ))}
         </div>

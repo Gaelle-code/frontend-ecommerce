@@ -72,6 +72,10 @@ const CartPage = () => {
               <article key={item.id} className="card cart-item">
                 <div>
                   <h2>{item.productName || item.productId}</h2>
+                  {/* Show the fuller variant label when available; otherwise fall back to the saved variant ID. */}
+                  {(item.variant?.label || item.variant?.id) ? (
+                    <p className="muted">Variant: {item.variant?.label ?? item.variant?.id}</p>
+                  ) : null}
                   <p>${item.price.toFixed(2)} each</p>
                 </div>
                 <div className="cart-controls">
